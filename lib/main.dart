@@ -11,12 +11,13 @@ class MyApp extends StatelessWidget{
     return MaterialApp(
       title: "Optica",
       theme: ThemeData(
-        primarySwatch: Colors.white70,
+        primarySwatch: Colors.deepPurple,
+        backgroundColor: Colors.white70,
         primaryColor: Colors.deepPurple.shade400,
-        accentColor: Colors.deepPurple.shade100,
-        fontFamily: GoogleFonts.nunito(),
-        appBarTheme: Colors.white70,
-
+        fontFamily: GoogleFonts.nunito().fontFamily,
+        appBarTheme: AppBarTheme(
+          color: Colors.white70,
+        ),
       ),
     );
   }
