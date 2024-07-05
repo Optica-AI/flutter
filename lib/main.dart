@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:optica_app/src/screens/splash.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
 void main(){
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget{
           color: Colors.white70,
         ),
       ),
-      home:splash.dart(),
+      home: SplashScreen(),
     );
   }
 }
