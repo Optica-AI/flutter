@@ -1,24 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+// import 'package:google_fonts/google_fonts.dart';
 
 void main(){
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget{
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context){
     return MaterialApp(
       title: "Optica",
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
-        backgroundColor: Colors.white70,
+        scaffoldBackgroundColor: Colors.white70,
         primaryColor: Colors.deepPurple.shade400,
-        fontFamily: GoogleFonts.nunito().fontFamily,
-        appBarTheme: AppBarTheme(
+        // fontFamily: GoogleFonts.nunito().fontFamily,
+        appBarTheme: const AppBarTheme(
           color: Colors.white70,
         ),
       ),
+      home:splash.dart(),
     );
   }
 }
