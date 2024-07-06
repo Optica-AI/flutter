@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:optica_app/src/screens/history.dart';
 import 'package:optica_app/src/screens/splash.dart';
+import 'package:optica_app/src/screens/tcs.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
 void main(){
@@ -15,14 +17,14 @@ class MyApp extends StatelessWidget{
       title: "Optica",
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
-        scaffoldBackgroundColor: Colors.white70,
+        scaffoldBackgroundColor: Colors.grey[100],
         primaryColor: Colors.deepPurple.shade400,
         // fontFamily: GoogleFonts.nunito().fontFamily,
-        appBarTheme: const AppBarTheme(
-          color: Colors.white70,
+        appBarTheme: AppBarTheme(
+          color: Colors.grey[100],
         ),
       ),
-      home: SplashScreen(),
+      home: History(),
     );
   }
 }
