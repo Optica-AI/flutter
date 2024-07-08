@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:optica_app/src/screens/history.dart';
 import 'package:optica_app/src/screens/splash.dart';
 import 'package:optica_app/src/screens/tcs.dart';
+import 'package:optica_app/src/widgets/navbar.dart';
 // import 'package:google_fonts/google_fonts.dart';
 
 void main(){
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget{
           color: Colors.grey[100],
         ),
       ),
-      home: History(),
+      home: SplashScreen(),
     );
   }
 }

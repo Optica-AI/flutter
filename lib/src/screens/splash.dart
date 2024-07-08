@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'home.dart';
 
 
 class SplashScreen extends StatelessWidget{
   @override
-  Widget build(BuildContext Context){
+  Widget build(BuildContext context){
+    Future.delayed(Duration(seconds: 2), (){
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_)=> Home()));
+    });
     return Scaffold(
       body: Center(
         child: Column(
@@ -16,8 +20,8 @@ class SplashScreen extends StatelessWidget{
               // alignment:Alignment.center,
             ),
             Image.asset('assets/images/Optica_text_logo.png',
-              width:160.0,
-              height:160.0,
+              width:120.0,
+              height:120.0,
               // alignment:Alignment.center,
             ),
           ],
