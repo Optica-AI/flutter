@@ -45,5 +45,11 @@
 	<false/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+
+	<!--Camera Access and Usage Description-->
+	<key>NSCameraUsageDescription</key>
+    <string>Optica want to access your camera.</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>Optica wants to access your microphone.</string>
 </dict>
 </plist>
