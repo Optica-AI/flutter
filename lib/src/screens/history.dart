@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 
-class History extends StatelessWidget{
+class History extends StatelessWidget {
   @override
-  Widget build(BuildContext Context){
+  Widget build(BuildContext Context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('History',
@@ -20,6 +20,7 @@ class History extends StatelessWidget{
           ),
         ),
       ),
+      body: Center(),
     );
   }
 }
