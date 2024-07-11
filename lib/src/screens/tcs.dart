@@ -45,13 +45,27 @@ class Terms extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 16.0),
             child: Divider(
-              thickness: 1.0,
+              thickness: 0.6,
               endIndent: 20.0,
             ),
           ),
           Padding(
             padding: EdgeInsets.all(16.0),
             child: Text('Terms of Use',
+                style: TextStyle(
+                  fontFamily: 'Nunito',
+                  fontSize: 16.0,
+                )),
+          ),Padding(
+            padding: EdgeInsets.only(left: 16.0),
+            child: Divider(
+              thickness: 0.6,
+              endIndent: 20.0,
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Text('Report a problem',
                 style: TextStyle(
                   fontFamily: 'Nunito',
                   fontSize: 16.0,
