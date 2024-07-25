@@ -2,11 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:optica_app/src/screens/about.dart';
 import 'package:optica_app/src/screens/history.dart';
 import 'package:optica_app/src/screens/legal_agreement.dart';
+import 'package:optica_app/src/screens/results.dart';
 import 'package:optica_app/src/screens/splash.dart';
 import 'package:optica_app/src/screens/tcs.dart';
 import 'package:optica_app/src/widgets/back_button.dart';
 import 'package:optica_app/src/widgets/navbar.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:optica_app/src/screens/form.dart';
+import 'package:optica_app/src/screens/result.dart';
+
 
 void main(){
   runApp(const MyApp());
@@ -28,7 +32,7 @@ class MyApp extends StatelessWidget{
           color: Colors.grey[100],
         ),
       ),
-      home: LegalAgreement(),
+      home: ResultsScreen(),
     );
   }
 }

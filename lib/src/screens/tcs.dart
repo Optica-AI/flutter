@@ -56,7 +56,8 @@ class Terms extends StatelessWidget {
                   fontFamily: 'Nunito',
                   fontSize: 16.0,
                 )),
-          ),Padding(
+          ),
+          Padding(
             padding: EdgeInsets.only(left: 16.0),
             child: Divider(
               thickness: 0.6,
