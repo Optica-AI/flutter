@@ -10,7 +10,8 @@ import 'package:optica_app/src/widgets/navbar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:optica_app/src/screens/form.dart';
 import 'package:optica_app/src/screens/result.dart';
-
+import 'package:optica_app/src/screens/home_screen.dart';
+import 'package:optica_app/src/screens/home.dart';
 
 void main(){
   runApp(const MyApp());
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget{
           color: Colors.grey[100],
         ),
       ),
-      home: ResultsScreen(),
+      home: Home(),
     );
   }
 }
