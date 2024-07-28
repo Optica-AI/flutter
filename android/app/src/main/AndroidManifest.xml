@@ -1,5 +1,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.optica_app">
+
+    <!--Required features to allow camera and audio access -->
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
+    <uses-feature android:name="android.hardware.camera2" android:required="true"/>
+
+    <!--Required permissions to allow camera and audio access -->
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+
    <application
         android:label="optica_app"
         android:name="${applicationName}"
