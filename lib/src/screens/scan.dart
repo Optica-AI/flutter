@@ -127,12 +127,20 @@ class _ScanScreenState extends State<ScanScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(6.0),
-                    child: Transform.rotate(
-                        angle: 3 * 3.14159265 / 2,
+                    child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height * 0.7,
                         child: FittedBox(
-                            fit: BoxFit.contain,
-                            child: Image.file(
-                                File(imagePath!),
+                            fit: BoxFit.cover,
+                            child: Transform.rotate(
+                                angle: 3 * 3.1415926535897932 / 2,
+                                child: Container(
+                                    width: controller.value.previewSize!.height,
+                                    height: controller.value.previewSize!.height,
+                                    child: Image.file(
+                                        File(imagePath!),
+                                    ),
+                                ),
                             ),
                         ),
                     ),
