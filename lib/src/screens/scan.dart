@@ -75,49 +75,54 @@ class _ScanScreenState extends State<ScanScreen> {
   Future<void> _savePhoto() async {
     if(imagePath !=null){
         try{
-          final uri = Uri.parse('http://10.0.2.2:3000/scans/upload');
-          final request = http.MultipartRequest ('POST', uri);
 
-          final imageFile = File(imagePath!);
-          final mimeType = lookupMimeType(imagePath!) ?? 'image/jpeg';
-          final imageStream = http.ByteStream(imageFile.openRead());
-          final imageLength = await imageFile.length();
+        }catch(e){
 
-
-          final multipartFile = http.MultipartFile(
-            'image',
-            imageStream,
-            imageLength,
-            filename: path.basename(imagePath!),
-            contentType: MediaType.parse(mimeType),
-          );
-
-          request.files.add(multipartFile);
-          final response = await request.send();
-          print(response);
-
-          print('Uploading file: ${imagePath!}');
-          print('Mime type: $mimeType');
-          print('Response status: ${response.statusCode}');
-          final responseBody = await response.stream.bytesToString();
-          print('Response body: $responseBody');
-
-          if(response.statusCode == 200){
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Photo uploaded successfully!')),
-            );
-          }
-          else {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Failed to upload photo.'))
-                );
-          }
         }
-        catch (e){
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Error uploading photo: $e')),
-            );
-        }
+//         try{
+//           final uri = Uri.parse('http://10.0.2.2:3000/scans/upload');
+//           final request = http.MultipartRequest ('POST', uri);
+//
+//           final imageFile = File(imagePath!);
+//           final mimeType = lookupMimeType(imagePath!) ?? 'image/jpeg';
+//           final imageStream = http.ByteStream(imageFile.openRead());
+//           final imageLength = await imageFile.length();
+//
+//
+//           final multipartFile = http.MultipartFile(
+//             'image',
+//             imageStream,
+//             imageLength,
+//             filename: path.basename(imagePath!),
+//             contentType: MediaType.parse(mimeType),
+//           );
+//
+//           request.files.add(multipartFile);
+//           final response = await request.send();
+//           print(response);
+//
+//           print('Uploading file: ${imagePath!}');
+//           print('Mime type: $mimeType');
+//           print('Response status: ${response.statusCode}');
+//           final responseBody = await response.stream.bytesToString();
+//           print('Response body: $responseBody');
+//
+//           if(response.statusCode == 200){
+//             ScaffoldMessenger.of(context).showSnackBar(
+//                 SnackBar(content: Text('Photo uploaded successfully!')),
+//             );
+//           }
+//           else {
+//                 ScaffoldMessenger.of(context).showSnackBar(
+//                     SnackBar(content: Text('Failed to upload photo.'))
+//                 );
+//           }
+//         }
+//         catch (e){
+//             ScaffoldMessenger.of(context).showSnackBar(
+//                 SnackBar(content: Text('Error uploading photo: $e')),
+//             );
+//         }
     }
   }
 
