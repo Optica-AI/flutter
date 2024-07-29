@@ -20,7 +20,7 @@ class _FormScreenState extends State<FormScreen> {
   final _formKey = GlobalKey<FormState>();
   final _firstnameController = TextEditingController();
   final _lastnameController = TextEditingController();
-  final _ageController = TextEditingController();
+//   final _ageController = TextEditingController();
   final _dobController = TextEditingController();
   Gender? _selectedGender;
   DateTime? _selectedDate;
@@ -44,9 +44,12 @@ class _FormScreenState extends State<FormScreen> {
     if(_formKey.currentState!.validate()){
       final firstName = _firstnameController.text;
       final lastName = _lastnameController.text;
-      final age = int.parse(_ageController.text);
+//       final age = int.parse(_ageController.text);
       final dob = _dobController.text;
       final gender = _selectedGender == Gender.male ? 'male' : 'female';
+
+      //Age calculation
+      int age = _calculateAge(_selectedDate);
 
       final patient = Patient(
           name: '$firstName $lastName',
@@ -75,6 +78,18 @@ class _FormScreenState extends State<FormScreen> {
         );
       }
     }
+  }
+
+  int _calculateAge(DateTime? dob){
+    if(dob == null){
+        return 0;
+    }
+    final today = DateTime.now();
+    int age = today.year -  dob.year;
+    if(today.month < dob.month || (today.month == dob.month && today.day < dob.day)){
+        age--;
+    }
+    return age;
   }
 
   Future<void> _selectDate(BuildContext context) async{
