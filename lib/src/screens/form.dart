@@ -5,9 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' as path;
 import '../models/patient.dart';
 import '../services/patient_service.dart';
+import 'package:optica_app/src/screens/scan.dart';
 
 enum Gender { male, female }
 
@@ -70,6 +71,11 @@ class _FormScreenState extends State<FormScreen> {
         ScaffoldMessenger.of(context as BuildContext).showSnackBar(
             SnackBar(content: Text('Patient added successfully!'),
             ),
+        );
+
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => ScanScreen()),
         );
       }
       else {
