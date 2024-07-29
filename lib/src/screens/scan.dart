@@ -2,43 +2,47 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
+import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
-class ScanScreen extends StatefulWidget{
+class ScanScreen extends StatefulWidget {
   @override
-  _ScanScreenState createState()=> _ScanScreenState();
+  _ScanScreenState createState() => _ScanScreenState();
 }
 
-class _ScanScreenState extends State<ScanScreen>{
+class _ScanScreenState extends State<ScanScreen> {
   late List<CameraDescription> cameras;
   late CameraController controller;
   late Future<void> _initialControllerFuture;
   String? imagePath;
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     _initializeCamera();
   }
 
-  Future<void> _initializeCamera() async{
+  Future<void> _initializeCamera() async {
     cameras = await availableCameras();
-    controller = CameraController(cameras[0], ResolutionPreset.high,
+    controller = CameraController(
+      cameras[0],
+      ResolutionPreset.high,
     );
     _initialControllerFuture = controller.initialize();
     setState(() {});
   }
-  void dispose(){
+
+  @override
+  void dispose() {
     controller.dispose();
     super.dispose();
   }
 
-  Future<void> _takePicture()async {
-    try{
+  Future<void> _takePicture() async {
+    try {
       await _initialControllerFuture;
       final directory = await getApplicationDocumentsDirectory();
-      final imagePath = join(directory.path, '${DateTime.now()}.png');
+      final imagePath = path.join(directory.path, '${DateTime.now()}.jpg');
       final image = await controller.takePicture();
       final File savedImage = File(imagePath);
 
@@ -46,16 +50,29 @@ class _ScanScreenState extends State<ScanScreen>{
       setState(() {
         this.imagePath = imagePath;
       });
-    } catch (e){
-      print('Error capturing image:$e');
+
+      // Dispose the camera controller after taking the picture
+      controller.dispose();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error capturing image: $e')),
+      );
     }
   }
 
+  Future<void> _retakePicture() async {
+    // Reinitialize the camera for retaking the picture
+    await _initializeCamera();
+    setState(() {
+      imagePath = null;
+    });
+  }
+
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Text(
+        title: Text(
           'Scan',
           style: TextStyle(
             color: Colors.purple[900],
@@ -70,45 +87,74 @@ class _ScanScreenState extends State<ScanScreen>{
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            FutureBuilder<void>(
-              future: _initialControllerFuture,
-              builder: (context, snapshot){
-                if(snapshot.connectionState == ConnectionState.done){
-                  return AspectRatio(
-                    aspectRatio: controller.value.aspectRatio,
-                    child: FittedBox(
-                      fit: BoxFit.cover,
-                      child: SizedBox(
-                        width: controller.value.previewSize!.width,
-                        height: controller.value.previewSize!.height,
-                        child: CameraPreview(controller),
-                      ),
+      body: Center(
+        child: imagePath == null
+            ? FutureBuilder<void>(
+                future: _initialControllerFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    return Column(
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          height: MediaQuery.of(context).size.height * 0.7,
+                          child: FittedBox(
+                            fit: BoxFit.cover,
+                            child: Transform.rotate(
+                              angle: 3 * 3.1415926535897932 / 2,
+                              child: Container(
+                                width: controller.value.previewSize!.height,
+                                height: controller.value.previewSize!.height,
+                                child: CameraPreview(controller),
+                              ),
+                            ),
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: _takePicture,
+                          child: Text('Take Photo'),
+                        ),
+                      ],
+                    );
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
+              )
+            : Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(6.0),
+                    child: Transform.rotate(
+                        angle: 3 * 3.14159265 / 2,
+                        child: FittedBox(
+                            fit: BoxFit.contain,
+                            child: Image.file(
+                                File(imagePath!),
+                            ),
+                        ),
                     ),
-                  );
-                }
-                else{
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }
-              },
-            ),
-            if(imagePath != null)
-              Image.file(
-                File(imagePath!),
-                width: 80,
-                height: 50,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                        onPressed: _retakePicture,
+                        child: Text('Retake Photo'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          // Handle saving the image
+                        },
+                        child: Text('Save Photo'),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            ElevatedButton(
-              onPressed: _takePicture,
-              child: Text('Capture Image for diagnosis.'),
-            ),
-          ],
-        ),
-      )
+      ),
     );
   }
 }
