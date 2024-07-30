@@ -50,7 +50,6 @@ class HomeScreen extends StatelessWidget {
                 padding: EdgeInsets.only(top: 10.0, bottom: 30.0),
                 child: Container(
                   height: 200.0,
-                  width: 350.0,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: Colors.black,
@@ -68,7 +67,6 @@ class HomeScreen extends StatelessWidget {
               //Text guidelines
               Container(
                 // height: 100.0,
-                width: 350.0,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
                   color: Colors.deepPurple[50],
