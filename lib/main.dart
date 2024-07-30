@@ -9,7 +9,6 @@ import 'package:optica_app/src/widgets/back_button.dart';
 import 'package:optica_app/src/widgets/navbar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:optica_app/src/screens/form.dart';
-import 'package:optica_app/src/screens/result.dart';
 import 'package:optica_app/src/screens/home_screen.dart';
 import 'package:optica_app/src/screens/home.dart';
 import 'package:optica_app/src/screens/scan.dart';

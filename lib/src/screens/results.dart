@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
-class ResultsScreen extends StatelessWidget {
+class ResultScreen extends StatelessWidget {
+  final  String diagnosis;
+
+  ResultScreen({required this.diagnosis});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -280,10 +284,10 @@ class ResultsScreen extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          Text('POSITIVE',
+                          Text(diagnosis,
                             style: TextStyle(
                               fontSize: 24.0,
-                              color: Colors.red,
+                              color: diagnosis == 'POSITIVE' ? Colors.green : Colors.red,
                             ),
                           ),
                         ],
