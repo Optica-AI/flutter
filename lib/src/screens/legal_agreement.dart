@@ -9,7 +9,7 @@ class LegalAgreement extends StatelessWidget{
           children: [
             Text(''),
             Text(
-              'Elevated Button',
+              '',
               style: TextStyle(
                 fontSize: 15.0,
                 fontFamily: 'GoogleFonts.roboto().fontFamily',

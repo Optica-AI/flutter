@@ -17,7 +17,10 @@ Future<bool> isFundusImage(List<List<dynamic>> input) async {
   _classifierInterpreter!.run(input, output);
 
   print('Classifier output: $output');
-  return output[0][0] > output[0][1];
+
+  double maxValue = output[0].map((e) => e as double).reduce((a, b) => a > b ? a : b);
+  print('This is the maximum value in the output is: $maxValue');
+  return output[0][0] == maxValue;
 }
 
 Future<String> runInference(List<List<dynamic>> input) async {

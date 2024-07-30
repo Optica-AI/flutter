@@ -22,12 +22,12 @@ class HomeScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: EdgeInsets.only(bottom: 18.0),
+                padding: const EdgeInsets.only(bottom: 18.0),
                 child: Text(
                   "Good Afternoon,",
                   style: TextStyle(
@@ -38,7 +38,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              Text(
+              const Text(
                 'Get familiar with Optica with this video tutorial',
                 style: TextStyle(
                     // fontSize:  ,
@@ -47,16 +47,16 @@ class HomeScreen extends StatelessWidget {
               ),
               //Video placeHolder
               Padding(
-                padding: EdgeInsets.only(top: 10.0, bottom: 30.0),
+                padding: const EdgeInsets.only(top: 10.0, bottom: 30.0),
                 child: Container(
-                  height: 200.0,
+                  height: 260.0,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
                     color: Colors.black,
                   ),
                 ),
               ),
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(bottom: 20.0),
                 child: Divider(
                   thickness: 1.0,
@@ -72,7 +72,7 @@ class HomeScreen extends StatelessWidget {
                   color: Colors.deepPurple[50],
                 ),
                 child: Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(16.0),
                   child: Column(
                     children: [
                       Row(

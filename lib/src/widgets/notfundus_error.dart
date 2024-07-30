@@ -33,8 +33,8 @@ class NotFundus extends StatelessWidget {
                 children: [
                   Icon(
                     CupertinoIcons.xmark_circle_fill,
-                    color: Colors.red,
-                    size: 120,
+                    color: Colors.deepPurple,
+                    size: 80,
                   ),
                 ],
               ),
@@ -57,12 +57,13 @@ class NotFundus extends StatelessWidget {
                   Expanded(
                     child: Text(
                         "The uploaded image is not a valid fundus image. Take a "
-                            "correct fundus photograph for accurate analysis.",
+                            "fundus image for accurate analysis.",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.w100,
-                        )),
+                          fontSize: 17.0,
+                          fontWeight: FontWeight.w500,
+                        ),
+                    ),
                   )
                 ],
               ),
@@ -71,12 +72,12 @@ class NotFundus extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => ScanScreen()), // Ensure Scan is the widget for your scan.dart
+                    MaterialPageRoute(builder: (context) => ScanScreen()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
                   padding:
-                      EdgeInsets.symmetric(horizontal: 40.0, vertical: 15.0),
+                      EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
                 ),
                 child: Text(
                   "Retake Photo",

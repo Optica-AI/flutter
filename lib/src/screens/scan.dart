@@ -2,12 +2,11 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:optica_app/src/screens/results.dart';
+import 'package:optica_app/src/widgets/notfundus_error.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
-import 'package:http/http.dart' as http;
-import 'package:http_parser/http_parser.dart';
-import 'package:mime/mime.dart';
 
 import '../models/tflite_model.dart';
 import '../utils/image_processing.dart';
@@ -22,6 +21,7 @@ class _ScanScreenState extends State<ScanScreen> {
   late CameraController controller;
   late Future<void> _initialControllerFuture;
   String? imagePath;
+  File? pickedImageFile; // I store the uploaded image here
 
   @override
   void initState() {
@@ -31,13 +31,19 @@ class _ScanScreenState extends State<ScanScreen> {
   }
 
   Future<void> _initializeCamera() async {
-    cameras = await availableCameras();
-    controller = CameraController(
-      cameras[0],
-      ResolutionPreset.high,
-    );
-    _initialControllerFuture = controller.initialize();
-    setState(() {});
+    try {
+      cameras = await availableCameras();
+      controller = CameraController(
+        cameras[0],
+        ResolutionPreset.high,
+      );
+      _initialControllerFuture = controller.initialize();
+      await _initialControllerFuture;
+      setState(() {});
+      print("Camera initialized successfully");
+    } catch (e) {
+      print(e);
+    }
   }
 
   @override
@@ -57,6 +63,7 @@ class _ScanScreenState extends State<ScanScreen> {
       savedImage.writeAsBytesSync(await image.readAsBytes());
       setState(() {
         this.imagePath = imagePath;
+        pickedImageFile = null; // Clear picked image if a new picture is taken
       });
 
       // Dispose the camera controller after taking the picture
@@ -73,24 +80,48 @@ class _ScanScreenState extends State<ScanScreen> {
     await _initializeCamera();
     setState(() {
       imagePath = null;
+      pickedImageFile = null;
     });
   }
 
+  Future<void> _uploadImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        pickedImageFile = File(pickedFile.path);
+        imagePath = null; // Clear camera image if a new image is picked
+      });
+    }
+  }
+
   Future<void> _savePhoto() async {
-    if (imagePath != null) {
+    File? imageFile = pickedImageFile ?? (imagePath != null ? File(imagePath!) : null);
+
+    if (imageFile != null) {
+      showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return Center(child: CircularProgressIndicator());
+          });
+
       try {
-        //Process image
-        final preprocessedImage = await preprocessImage(File(imagePath!));
+        await Future.delayed(Duration(milliseconds: 3000));
+
+        // Process image
+        final preprocessedImage = await preprocessImage(imageFile);
 
         final isFundus = await isFundusImage(preprocessedImage);
 
-
-        if(isFundus){
-          //run inference
+        if (isFundus) {
+          // Run diagnosis model if fundus image is the valid.
           final diagnosis = await runInference(preprocessedImage);
           print('This is the diagnosis: $diagnosis');
 
-          //Navigate to diagnosis screen
+          Navigator.of(context).pop();
+
+          // Navigation to diagnosis screen
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -98,16 +129,31 @@ class _ScanScreenState extends State<ScanScreen> {
             ),
           );
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('The captured image is not a fundus image. Please retake picture.')),
+          Navigator.of(context).pop();
+
+          Navigator.pushReplacement(
+            context,
+            PageRouteBuilder(
+              pageBuilder: (context, animation1, animation2) => NotFundus(),
+              transitionsBuilder: (context, animation, animation2, child) {
+                const begin = Offset(0.0, 1.1);
+                const end = Offset.zero;
+                const curve = Curves.easeInOut;
+                var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+                var offsetAnimation = animation.drive(tween);
+                return SlideTransition(position: offsetAnimation, child: child);
+              },
+              transitionDuration: Duration(milliseconds: 500),
+            ),
           );
         }
       } catch (e) {
+        Navigator.of(context).pop();
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error processing image: $e')),
         );
       }
-//
     }
   }
 
@@ -131,143 +177,128 @@ class _ScanScreenState extends State<ScanScreen> {
         ),
       ),
       body: Center(
-        child: imagePath == null
+        child: pickedImageFile == null && imagePath == null
             ? FutureBuilder<void>(
-                future: _initialControllerFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
-                    return Column(
-                      children: [
-                        Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height * 0.7,
-                          child: FittedBox(
-                            fit: BoxFit.cover,
-                            child: Transform.rotate(
-                              angle: 3 * 3.1415926535897932 / 2,
-                              child: Container(
-                                width: controller.value.previewSize!.height,
-                                height: controller.value.previewSize!.height,
-                                child: CameraPreview(controller),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(left: 0.0, top: 20.0, right: 0.0, bottom: 0.0),
-                          child: ElevatedButton(
-                            onPressed: _takePicture,
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: Size(100, 100),
-                              padding: EdgeInsets.zero,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50),
-                                side: BorderSide(
-                                  color: Colors.deepPurple,
-                                  width: 4,
-                                ),
-                              ),
-                            ),
-                            child: Icon(Icons.camera_alt, size: 30, color: Colors.deepPurple),
-                          ),
-                        ),
-                      ],
-                    );
-                  } else {
-                    return Center(
-                      child: CircularProgressIndicator(),
-                    );
-                  }
-                },
-              )
-            : Column(
+          future: _initialControllerFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.connectionState == ConnectionState.done) {
+              return Column(
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(6.0),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height * 0.7,
-                      child: FittedBox(
-                        fit: BoxFit.contain,
-                        child: Transform.rotate(
-                          angle: 0 * 3.1415926535897932 / 2,
-                          child: Container(
-//                                  width: controller.value.previewSize!.height,
-                            height: 600,
-                            child: Image.file(
-                              File(imagePath!),
-                            ),
-                          ),
+                  Container(
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height * 0.62,
+                    child: FittedBox(
+                      fit: BoxFit.cover,
+                      child: Transform.rotate(
+                        angle: 3 * 3.1415926535897932 / 2,
+                        child: Container(
+                          width: controller.value.previewSize?.height ?? 0,
+                          height: controller.value.previewSize?.height ?? 0,
+                          child: CameraPreview(controller),
                         ),
                       ),
                     ),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ElevatedButton(
-                        onPressed: _retakePicture,
-                        child: Text('Retake Photo'),
-                      ),
-                      ElevatedButton(
-                        onPressed: _savePhoto,
-                        child: Text('Save Photo'),
-                      ),
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.only(left: 0.0, top: 20.0, right: 0.0, bottom: 0.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Padding(
+                            padding:EdgeInsets.only(left: 20.0) ,
+                            child: ElevatedButton(
+                              onPressed: _uploadImage,
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: const Size(100, 30),
+                                padding: EdgeInsets.zero,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50),
+                                  side: const BorderSide(
+                                    color: Colors.deepPurple,
+                                    width: 1,
+                                  ),
+                                ),
+                              ),
+                              child: const Text(
+                                '+ Upload',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 60.0),
+                          child: ElevatedButton(
+                            onPressed: _takePicture,
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: const Size(100, 100),
+                              elevation: 6,
+                              padding: EdgeInsets.zero,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                                side: const BorderSide(
+                                  color: Colors.deepPurple,
+                                  width: 8,
+                                ),
+                              ),
+                            ),
+                            child: const Icon(Icons.camera_alt, size: 30, color: Colors.deepPurple),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
+              );
+            } else {
+              return Center(
+                child: Text('Error initializing camera: ${snapshot.error}'),
+              );
+            }
+          },
+        )
+            : Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(6.0),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height * 0.7,
+                child: FittedBox(
+                  fit: BoxFit.contain,
+                  child: Transform.rotate(
+                    angle: 3 * 3.1415926535897932 / 2,
+                    child: Container(
+                      height: controller.value.previewSize!.height * 0.2,
+                      child: pickedImageFile != null
+                          ? Image.file(pickedImageFile!)
+                          : Image.file(File(imagePath!)),
+                    ),
+                  ),
+                ),
               ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: _retakePicture,
+                  child: const Text('Retake Photo'),
+                ),
+                ElevatedButton(
+                  onPressed: _savePhoto,
+                  child: const Text('Diagnose'),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
 }
-
-
-
-
-
-
-// try{
-//           final uri = Uri.parse('http://10.0.2.2:3000/scans/upload');
-//           final request = http.MultipartRequest ('POST', uri);
-//
-//           final imageFile = File(imagePath!);
-//           final mimeType = lookupMimeType(imagePath!) ?? 'image/jpeg';
-//           final imageStream = http.ByteStream(imageFile.openRead());
-//           final imageLength = await imageFile.length();
-//
-//
-//           final multipartFile = http.MultipartFile(
-//             'image',
-//             imageStream,
-//             imageLength,
-//             filename: path.basename(imagePath!),
-//             contentType: MediaType.parse(mimeType),
-//           );
-//
-//           request.files.add(multipartFile);
-//           final response = await request.send();
-//           print(response);
-//
-//           print('Uploading file: ${imagePath!}');
-//           print('Mime type: $mimeType');
-//           print('Response status: ${response.statusCode}');
-//           final responseBody = await response.stream.bytesToString();
-//           print('Response body: $responseBody');
-//
-//           if(response.statusCode == 200){
-//             ScaffoldMessenger.of(context).showSnackBar(
-//                 SnackBar(content: Text('Photo uploaded successfully!')),
-//             );
-//           }
-//           else {
-//                 ScaffoldMessenger.of(context).showSnackBar(
-//                     SnackBar(content: Text('Failed to upload photo.'))
-//                 );
-//           }
-//         }
-//         catch (e){
-//             ScaffoldMessenger.of(context).showSnackBar(
-//                 SnackBar(content: Text('Error uploading photo: $e')),
-//             );
-//         }

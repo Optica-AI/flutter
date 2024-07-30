@@ -21,8 +21,8 @@ class _Navbar extends State<NavBar>{
     return BottomNavigationBar(
       currentIndex: widget.currentIndex,
       onTap: widget.onTap,
-      unselectedItemColor: Colors.purple,
-      selectedItemColor: Colors.deepPurple,
+      unselectedItemColor: Colors.deepPurple[300],
+      selectedItemColor: Colors.deepPurple[600],
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home_outlined),

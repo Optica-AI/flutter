@@ -1,9 +1,46 @@
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 
 class ResultScreen extends StatelessWidget {
   final  String diagnosis;
 
   ResultScreen({required this.diagnosis});
+
+  Future<void> _saveResults() async {
+    final url = "http://10.0.2.2:3000/results";
+
+    final data = {
+      diagnosis: diagnosis,
+    };
+
+    try{
+      final response =  await http.post(
+        Uri.parse(url),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: json.encode(data),
+      );
+      if(response.statusCode == 200) {
+        //Print success message so I can check when I'm stressed
+        ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+            SnackBar(content: Text('Results saved successfully')),
+        );
+      }
+      else{
+        ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+          SnackBar(content: Text('Saving results failed: ${response.reasonPhrase}')),
+        );
+      }
+    }catch(e){
+      //Handle errors before I lose my mind
+      ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+        SnackBar(content: Text('Error saving results: $e')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +72,7 @@ class ResultScreen extends StatelessWidget {
                 height: 160,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(11),
-                  color: Colors.purple[100],
+                  color: Colors.deepPurple[100],
                   boxShadow: [
                     BoxShadow(
                       color: Colors.grey,
@@ -143,7 +180,7 @@ class ResultScreen extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(top: 10.0),
               child: Container(
-                height: 400.0,
+                height: 450.0,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(11),
                   color: Colors.white,
@@ -152,7 +189,7 @@ class ResultScreen extends StatelessWidget {
                       color: Colors.grey,
                       offset: Offset(4, 4),
                       blurRadius: 8,
-                      spreadRadius: 2,
+                      spreadRadius: 1,
                     ),
                   ],
                 ),
@@ -287,12 +324,30 @@ class ResultScreen extends StatelessWidget {
                           Text(diagnosis,
                             style: TextStyle(
                               fontSize: 24.0,
+                              fontWeight: FontWeight.bold,
                               color: diagnosis == 'POSITIVE' ? Colors.green : Colors.red,
                             ),
                           ),
                         ],
                       ),
                     ],
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 20.0),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.purple[900],
+                  minimumSize: const Size(400, 50),
+                ),
+                onPressed: _saveResults ,
+                child: Text(
+                    'Save',
+                  style: TextStyle(
+                    color: Colors.purple[50],
+                    fontSize: 20.0,
                   ),
                 ),
               ),
