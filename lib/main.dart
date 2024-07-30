@@ -12,6 +12,7 @@ import 'package:optica_app/src/screens/form.dart';
 import 'package:optica_app/src/screens/home_screen.dart';
 import 'package:optica_app/src/screens/home.dart';
 import 'package:optica_app/src/screens/scan.dart';
+import 'package:optica_app/src/widgets/notfundus_error.dart';
 
 void main(){
   runApp(const MyApp());
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget{
           color: Colors.grey[100],
         ),
       ),
-      home: ScanScreen(),
+      home: HomeScreen(),
     );
   }
 }
