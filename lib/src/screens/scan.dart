@@ -27,6 +27,7 @@ class _ScanScreenState extends State<ScanScreen> {
   void initState() {
     super.initState();
     _initializeCamera();
+    loadModel();
   }
 
   Future<void> _initializeCamera() async {
@@ -81,19 +82,26 @@ class _ScanScreenState extends State<ScanScreen> {
         //Process image
         final preprocessedImage = await preprocessImage(File(imagePath!));
 
-        //load model
-        final model = await loadModel();
+        final isFundus = await isFundusImage(preprocessedImage);
 
-        //run inference
-        final diagnosis = await runInference(model, preprocessedImage);
 
-        //Navigate to diagnosis screen
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ResultScreen(diagnosis: diagnosis),
-          ),
-        );
+        if(isFundus){
+          //run inference
+          final diagnosis = await runInference(preprocessedImage);
+          print('This is the diagnosis: $diagnosis');
+
+          //Navigate to diagnosis screen
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ResultScreen(diagnosis: diagnosis),
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('The captured image is not a fundus image. Please retake picture.')),
+          );
+        }
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error processing image: $e')),
@@ -182,7 +190,7 @@ class _ScanScreenState extends State<ScanScreen> {
                       child: FittedBox(
                         fit: BoxFit.contain,
                         child: Transform.rotate(
-                          angle: 3 * 3.1415926535897932 / 2,
+                          angle: 0 * 3.1415926535897932 / 2,
                           child: Container(
 //                                  width: controller.value.previewSize!.height,
                             height: 600,

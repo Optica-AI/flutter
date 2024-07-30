@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget{
           color: Colors.grey[100],
         ),
       ),
-      home: ScanScreen(),
+      home: SplashScreen(),
     );
   }
 }
