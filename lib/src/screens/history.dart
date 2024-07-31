@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 
@@ -77,13 +78,22 @@ class _HistoryState extends State<History>{
               itemBuilder: (BuildContext context, int index) {
                 final scan = _scans[index];
                 final color = _colorPalette[index % _colorPalette.length];
-                return Container(
-                  color: color,
-                  child: ListTile(
-                    title: Text('Scan ID: ${scan['patientId']}${scan['patientName']}'),
-                    subtitle: Text('Diagnosis: ${scan['diagnosis']}'),
-                    trailing: Text('Time: ${scan['createdAt']}'),
-                  ),
+                final createdAt = DateTime.parse(scan['createdAt']);
+                final formattedTime =  DateFormat.Hm().format(createdAt);
+                return Padding(
+                    padding: EdgeInsets.only(left: 10.0, top: 5.0, right: 10.0, bottom: 5.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(11),
+                        color: color
+                      ),
+                      // color: color,
+                      child: ListTile(
+                        title: Text('Scan ID: ${scan['patientId']}${scan['patientName']}'),
+                        subtitle: Text('Diagnosis: ${scan['diagnosis']}'),
+                        trailing: Text('${formattedTime}'),
+                      ),
+                    ),
                 );
               },
 

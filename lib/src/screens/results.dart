@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:path/path.dart' as path;
 import 'package:path/path.dart';
 
@@ -78,6 +79,9 @@ class ResultScreen extends StatelessWidget {
             context: context,
             builder: (BuildContext context){
               return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(11.0)  ,
+                ),
                 content: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -123,6 +127,9 @@ class ResultScreen extends StatelessWidget {
         context: context,
         builder: (BuildContext context){
           return AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(11.0),
+            ),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -138,6 +145,7 @@ class ResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String formattedDOB =  DateFormat('dd MMMM yyyy').format(DateTime.parse(patientDOB!));
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -357,7 +365,7 @@ class ResultScreen extends StatelessWidget {
                                   ),
                                   SizedBox(height: 6),
                                   Text(
-                                    '${patientGender == 'male' ? 'M' : 'F'}',
+                                    '${patientGender == 'male' ? 'M' : (patientGender == 'female' ? 'F' : '')}',
                                     style: TextStyle(
                                       fontSize: 24.0,
                                       color: Colors.purple[900],
@@ -389,7 +397,7 @@ class ResultScreen extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            Text('${patientDOB}',
+                            Text(formattedDOB,
                               style: TextStyle(
                                 fontSize: 18.0,
                                 color: Colors.purple[900],

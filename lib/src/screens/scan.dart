@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:optica_app/src/screens/results.dart';
@@ -154,20 +155,41 @@ class _ScanScreenState extends State<ScanScreen> {
           print('And once again this is the patientDetails: $_currentPatientName');
         } else {
           Navigator.of(context).pop();
-          Navigator.push(
-            context,
-            PageRouteBuilder(
-              pageBuilder: (context, animation1, animation2) => NotFundus(onBack: widget.onBack),
-              transitionsBuilder: (context, animation, animation2, child) {
-                const begin = Offset(0.0, 1.1);
-                const end = Offset.zero;
-                const curve = Curves.easeInOut;
-                var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-                var offsetAnimation = animation.drive(tween);
-                return SlideTransition(position: offsetAnimation, child: child);
-              },
-              transitionDuration: Duration(milliseconds: 500),
-            ),
+          showDialog(
+              context: context,
+              builder: (BuildContext context){
+                return AlertDialog(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(11.0),
+                  ),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        CupertinoIcons.xmark_circle_fill,
+                        color: Colors.deepPurple,
+                        size: 60,
+                      ),
+                      Text(
+                        'ERROR',
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                      ),
+                      Flexible(
+                        child: Text(
+                            "The image is not a valid fundus image. Take or upload a "
+                                "fundus image for accurate diagnosis",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }
           );
         }
       } catch (e) {
