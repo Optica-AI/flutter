@@ -71,6 +71,11 @@ class _FormScreenState extends State<FormScreen> {
       if(response.statusCode == 201){
         final responseData = json.decode(response.body);
         final patientId = responseData['id'].toString();
+        final patientName = responseData['name'].toString();
+        final patientAge = responseData['age'].toString();
+        final patientGender = responseData['gender'].toString();
+        final patientDOB = responseData['dob'].toString();
+
         print('This is the response data: $responseData');
         print('This is the ID from backend: $patientId');
 
@@ -78,9 +83,19 @@ class _FormScreenState extends State<FormScreen> {
             SnackBar(content: Text('Patient added successfully!'),
             ),
         );
-        Navigator.pop(context, {patientId: patientId, responseData: responseData});
-        print('I am leaving with patientid: $patientId');
-        print('I am leaving with patientDetails: $responseData');
+        Navigator.pop(context, {
+          'patientId': patientId,
+          'patientName': patientName,
+          'patientAge': patientAge,
+          'patientGender': patientGender,
+          'patientDOB': patientDOB
+        });
+
+        print('I am leaving with patientId: $patientId');
+        print('I am leaving with patientName: $patientName');
+        print('I am leaving with patientAge: $patientAge');
+        print('I am leaving with patientGender: $patientGender');
+        print('I am leaving with patientDOB: $patientDOB');
 
         // Navigator.pushReplacement(
         //     context,

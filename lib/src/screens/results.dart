@@ -5,8 +5,11 @@ import 'package:path/path.dart' as path;
 import 'package:path/path.dart';
 
 class ResultScreen extends StatelessWidget {
-  final Map<String, dynamic> patientDetails;
   final String? patientId;
+  final String? patientName;
+  final String? patientAge;
+  final String? patientGender;
+  final String? patientDOB;
   final String imagePath;
   final  String diagnosis;
   final String timeStamp;
@@ -17,7 +20,10 @@ class ResultScreen extends StatelessWidget {
     required this.imagePath,
     required this.diagnosis,
     required this.timeStamp,
-    required this.patientDetails,
+    required this.patientName,
+    required this.patientAge,
+    required this.patientGender,
+    required this.patientDOB,
   });
 
   // Future<Map<String, dynamic>> fetchPatientDetails(String patientId)async{
@@ -81,7 +87,6 @@ class ResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final details = patientDetails ?? {};
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -137,7 +142,7 @@ class ResultScreen extends StatelessWidget {
                           ),
                           SizedBox(height: 6),
                           Text(
-                            '#${patientId}',
+                            '#000${patientId}',
                             style: TextStyle(
                               fontWeight: FontWeight.w100,
                               fontSize: 18.0,
@@ -248,7 +253,7 @@ class ResultScreen extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          Text('N/A',
+                          Text('${patientName}',
                             style: TextStyle(
                               fontSize: 24.0,
                               color: Colors.purple[900],
@@ -280,7 +285,7 @@ class ResultScreen extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(height: 6),
-                                Text('yrs',
+                                Text('${patientAge} yrs',
                                   style: TextStyle(
                                     fontSize: 24.0,
                                     color: Colors.purple[900],
@@ -298,7 +303,8 @@ class ResultScreen extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(height: 6),
-                                Text('N/A',
+                                Text(
+                                  '${patientGender == 'Male' ? 'M' : 'F'}',
                                   style: TextStyle(
                                     fontSize: 24.0,
                                     color: Colors.purple[900],
@@ -330,7 +336,7 @@ class ResultScreen extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          Text('01 APRIL 1997',
+                          Text('${patientDOB}',
                             style: TextStyle(
                               fontSize: 24.0,
                               color: Colors.purple[900],

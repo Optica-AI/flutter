@@ -20,7 +20,10 @@ class ScanScreen extends StatefulWidget {
 
 class _ScanScreenState extends State<ScanScreen> {
   String? _currentPatientId;
-  late Map<String, dynamic> _currentPatientDetails = {};
+  String? _currentPatientName;
+  String? _currentPatientAge;
+  String? _currentPatientGender;
+  String? _currentPatientDOB;
   late List<CameraDescription> cameras;
   late CameraController controller;
   late Future<void> _initialControllerFuture;
@@ -132,8 +135,11 @@ class _ScanScreenState extends State<ScanScreen> {
             context,
             MaterialPageRoute(
               builder: (context) => ResultScreen(
-                patientDetails: _currentPatientDetails,
                 patientId: _currentPatientId,
+                patientName: _currentPatientName,
+                patientAge: _currentPatientAge,
+                patientGender: _currentPatientGender,
+                patientDOB: _currentPatientDOB,
                 imagePath: imageFile.path,
                 diagnosis: diagnosis,
                 timeStamp: DateTime.now().toIso8601String(),
@@ -141,7 +147,7 @@ class _ScanScreenState extends State<ScanScreen> {
             ),
           );
           print('Once again this is the patientID: $_currentPatientId');
-          print('And once again this is the patientDetails: $_currentPatientDetails');
+          print('And once again this is the patientDetails: $_currentPatientName');
         } else {
           Navigator.of(context).pop();
           Navigator.push(
@@ -193,12 +199,20 @@ class _ScanScreenState extends State<ScanScreen> {
               context,
               MaterialPageRoute(builder: (context) => FormScreen()),
               );
+              print('This is the received data from forms: $patientDetails');
               if(patientDetails != null){
                 setState((){
                   _currentPatientId = patientDetails['patientId'];
-                  _currentPatientDetails = patientDetails['responseData'];
+                  _currentPatientName = patientDetails['patientName'];
+                  _currentPatientAge = patientDetails['patientAge'];
+                  _currentPatientGender = patientDetails['patientGender'];
+                  _currentPatientDOB = patientDetails['patientDOB'];
                   print('This is the patient IDDDDDD: $_currentPatientId');
-                  print ('This patients details are: $_currentPatientDetails');
+                  print('This is the patient Name: $_currentPatientName');
+                  print('This is the patient Age: $_currentPatientAge');
+                  print('This is the patient Gender: $_currentPatientGender');
+                  print('This is the patient DOB: $_currentPatientDOB');
+
               });
               }
               else{
