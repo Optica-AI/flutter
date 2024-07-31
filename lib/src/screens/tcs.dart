@@ -35,7 +35,7 @@ class Terms extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(12.0),
             child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -69,7 +69,7 @@ class Terms extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(12.0),
             child: ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -98,12 +98,12 @@ class Terms extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 16.0),
             child: Divider(
-              thickness: 1.0,
+              thickness: 0.6,
               endIndent: 20.0,
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(16.0),
+            padding: EdgeInsets.all(12.0),
             child: ElevatedButton(
               onPressed: () {
                 Navigator.push(

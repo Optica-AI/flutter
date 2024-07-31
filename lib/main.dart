@@ -27,10 +27,15 @@ class MyApp extends StatelessWidget{
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
         scaffoldBackgroundColor: Colors.grey[100],
-        primaryColor: Colors.deepPurple.shade400,
+        primaryColor: Colors.deepPurple,
         fontFamily: GoogleFonts.nunito().fontFamily,
         appBarTheme: AppBarTheme(
           color: Colors.grey[100],
+        ),
+        bottomNavigationBarTheme: BottomNavigationBarThemeData(
+          backgroundColor: Colors.white, // Set background color here
+          unselectedItemColor: Colors.deepPurple[300],
+          selectedItemColor: Colors.deepPurple[600],
         ),
       ),
       home: SplashScreen(),

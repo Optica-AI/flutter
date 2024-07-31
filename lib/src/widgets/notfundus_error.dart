@@ -3,6 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:optica_app/src/screens/scan.dart';
 
 class NotFundus extends StatelessWidget {
+  final VoidCallback onBack;
+
+  NotFundus({required this.onBack});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -60,8 +64,8 @@ class NotFundus extends StatelessWidget {
                             "fundus image for accurate analysis.",
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          fontSize: 17.0,
-                          fontWeight: FontWeight.w500,
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.normal,
                         ),
                     ),
                   )
@@ -72,7 +76,7 @@ class NotFundus extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => ScanScreen()),
+                    MaterialPageRoute(builder: (context) => ScanScreen(onBack: onBack,)),
                   );
                 },
                 style: ElevatedButton.styleFrom(
@@ -82,7 +86,7 @@ class NotFundus extends StatelessWidget {
                 child: Text(
                   "Retake Photo",
                   style: TextStyle(
-                    fontSize: 18.0,
+                    fontSize: 14.0,
                     color: Colors.purple[900], // Text color
                   ),
                 ),

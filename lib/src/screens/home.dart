@@ -14,24 +14,37 @@ class Home extends StatefulWidget{
 class _Home extends State<Home>{
   int _selectedIndex = 0;
 
-  static final List<Widget> _widgetOptions = <Widget>[
-    HomeScreen(),
-    ScanScreen(),
-    History(),
-    Terms(),
-  ];
 
   void onItemTapped(int index){
     setState(() {
       _selectedIndex = index;
     });
   }
+
+  void _onBackFromScreen(){
+    setState(() {
+      _selectedIndex = 0;
+    });
+  }
+
   @override
   Widget build(BuildContext context){
+    List<Widget> _widgetOptions = <Widget>[
+      HomeScreen(),
+      ScanScreen(onBack: _onBackFromScreen),
+      History(),
+      Terms(),
+    ];
+
     return Scaffold(
-      appBar: AppBar(),
-      body: _widgetOptions.elementAt(_selectedIndex),
-      bottomNavigationBar: NavBar(currentIndex: _selectedIndex, onTap: onItemTapped),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _widgetOptions,
+      ),
+      bottomNavigationBar: _selectedIndex!= 1
+          ? NavBar(
+              currentIndex: _selectedIndex,
+              onTap: onItemTapped) : null,
     );
   }
 }

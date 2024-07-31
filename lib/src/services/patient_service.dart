@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import '../models/patient.dart';
 
 class PatientService {
-  static const String baseURL = 'http://10.0.2.2:3000';
+  static const String baseURL = 'http://172.20.10.3:3000';
 
   static Future<http.Response> createPatient(Patient patient) async {
     final url = Uri.parse('$baseURL/patients');

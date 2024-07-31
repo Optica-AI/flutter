@@ -14,6 +14,10 @@ import '../utils/image_processing.dart';
 import 'form.dart';
 
 class ScanScreen extends StatefulWidget {
+  final VoidCallback onBack;
+
+  ScanScreen({required this.onBack});
+
   @override
   _ScanScreenState createState() => _ScanScreenState();
 }
@@ -153,7 +157,7 @@ class _ScanScreenState extends State<ScanScreen> {
           Navigator.push(
             context,
             PageRouteBuilder(
-              pageBuilder: (context, animation1, animation2) => NotFundus(),
+              pageBuilder: (context, animation1, animation2) => NotFundus(onBack: widget.onBack),
               transitionsBuilder: (context, animation, animation2, child) {
                 const begin = Offset(0.0, 1.1);
                 const end = Offset.zero;
@@ -180,6 +184,10 @@ class _ScanScreenState extends State<ScanScreen> {
     print('The passed patientid is: $_currentPatientId');
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new),
+          onPressed: widget.onBack,
+        ),
         title: Text(
           'Scan',
           style: TextStyle(
@@ -191,7 +199,7 @@ class _ScanScreenState extends State<ScanScreen> {
           IconButton(
             icon: Icon(
               Icons.person_add,
-              size: 30,
+              size: 25,
               color: Colors.grey[800],
             ),
             onPressed: () async {
@@ -247,10 +255,10 @@ class _ScanScreenState extends State<ScanScreen> {
                     child: FittedBox(
                       fit: BoxFit.cover,
                       child: Transform.rotate(
-                        angle: 3 * 3.1415926535897932 / 2,
-                        child: Container(
-                          width: controller.value.previewSize?.height ?? 0,
-                          height: controller.value.previewSize?.height ?? 0,
+                        angle: 0 * 3.1415926535897932 / 2,
+                        child: SizedBox(
+                          width: controller.value.previewSize?.height,
+                          height: controller.value.previewSize!.width * 1.2 ,
                           child: CameraPreview(controller),
                         ),
                       ),
@@ -262,7 +270,7 @@ class _ScanScreenState extends State<ScanScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Padding(
-                            padding:EdgeInsets.only(left: 20.0) ,
+                            padding:EdgeInsets.only(left: 20.0,) ,
                             child: ElevatedButton(
                               onPressed: _uploadImage,
                               style: ElevatedButton.styleFrom(
@@ -285,7 +293,7 @@ class _ScanScreenState extends State<ScanScreen> {
                             ),
                         ),
                         Padding(
-                          padding: EdgeInsets.only(left: 60.0),
+                          padding: const EdgeInsets.only(left: 20.0, bottom: 10.0),
                           child: ElevatedButton(
                             onPressed: _takePicture,
                             style: ElevatedButton.styleFrom(
@@ -296,7 +304,7 @@ class _ScanScreenState extends State<ScanScreen> {
                                 borderRadius: BorderRadius.circular(50),
                                 side: const BorderSide(
                                   color: Colors.deepPurple,
-                                  width: 8,
+                                  width: 6,
                                 ),
                               ),
                             ),
@@ -325,7 +333,7 @@ class _ScanScreenState extends State<ScanScreen> {
                 child: FittedBox(
                   fit: BoxFit.contain,
                   child: Transform.rotate(
-                    angle: 3 * 3.1415926535897932 / 2,
+                    angle: 0 * 3.1415926535897932 / 2,
                     child: Container(
                       height: controller.value.previewSize!.height * 0.2,
                       child: pickedImageFile != null

@@ -15,8 +15,8 @@ class SplashScreen extends StatelessWidget{
           mainAxisSize: MainAxisSize.min,
           children: [
             Image.asset('assets/images/Optica_Logo.png',
-              width:160.0,
-              height:160.0,
+              width:100.0,
+              height:100.0,
               // alignment:Alignment.center,
             ),
             Image.asset('assets/images/Optica_text_logo.png',
