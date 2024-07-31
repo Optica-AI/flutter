@@ -1,19 +1,55 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
+import 'package:path/path.dart' as path;
 import 'package:path/path.dart';
 
 class ResultScreen extends StatelessWidget {
+  final Map<String, dynamic> patientDetails;
+  final String? patientId;
+  final String imagePath;
   final  String diagnosis;
+  final String timeStamp;
 
-  ResultScreen({required this.diagnosis});
 
-  Future<void> _saveResults() async {
-    final url = "http://10.0.2.2:3000/results";
+  ResultScreen({
+    required this.patientId,
+    required this.imagePath,
+    required this.diagnosis,
+    required this.timeStamp,
+    required this.patientDetails,
+  });
 
-    final data = {
-      diagnosis: diagnosis,
+  // Future<Map<String, dynamic>> fetchPatientDetails(String patientId)async{
+  //   final url = 'http://10.0.2.2:3000/patient';
+  //
+  //   try{
+  //     final response = await http.get(Uri.parse(url));
+  //
+  //     if(response.statusCode == 200){
+  //       return json.decode(response.body) as Map<String, dynamic>;
+  //     }
+  //     else{
+  //       throw Exception('Failed to load patient details');
+  //     }
+  //   }
+  //   catch(e){
+  //     print('Error fetching patient details');
+  //     throw (e);
+  //   }
+  // }
+
+  Future<void> _saveResults(BuildContext context) async {
+    final url = "http://10.0.2.2:3000/scans";
+
+    final scan = {
+      'patientId': patientId,
+      'imagePath': imagePath,
+      'diagnosis': diagnosis,
+      'timeStamp': DateTime.now().toIso8601String(),
     };
+
+    print('This is the scan object: $scan');
 
     try{
       final response =  await http.post(
@@ -21,22 +57,23 @@ class ResultScreen extends StatelessWidget {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: json.encode(data),
+        body: json.encode(scan),
       );
+      print(response);
       if(response.statusCode == 200) {
         //Print success message so I can check when I'm stressed
-        ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Results saved successfully')),
         );
       }
       else{
-        ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Saving results failed: ${response.reasonPhrase}')),
         );
       }
     }catch(e){
       //Handle errors before I lose my mind
-      ScaffoldMessenger.of(context as BuildContext).showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error saving results: $e')),
       );
     }
@@ -44,6 +81,7 @@ class ResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final details = patientDetails ?? {};
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -99,7 +137,7 @@ class ResultScreen extends StatelessWidget {
                           ),
                           SizedBox(height: 6),
                           Text(
-                            '#0008976',
+                            '#${patientId}',
                             style: TextStyle(
                               fontWeight: FontWeight.w100,
                               fontSize: 18.0,
@@ -116,7 +154,7 @@ class ResultScreen extends StatelessWidget {
                           ),
                           SizedBox(height: 6),
                           Text(
-                            '02 APRIL 2024',
+                            timeStamp.split('T')[0],
                             style: TextStyle(
                               fontWeight: FontWeight.w100,
                               fontSize: 18.0,
@@ -137,7 +175,7 @@ class ResultScreen extends StatelessWidget {
                           ),
                           SizedBox(height: 6),
                           Text(
-                            '#OT0006',
+                            '#OT0006', /// Check response for vibes
                             style: TextStyle(
                               fontWeight: FontWeight.w100,
                               fontSize: 18.0,
@@ -154,7 +192,7 @@ class ResultScreen extends StatelessWidget {
                           ),
                           SizedBox(height: 6),
                           Text(
-                            'GMT 14:17pm',
+                            timeStamp.split('T')[1].split('.')[0],
                             style: TextStyle(
                               fontWeight: FontWeight.w100,
                               fontSize: 18.0,
@@ -210,7 +248,7 @@ class ResultScreen extends StatelessWidget {
                       ),
                       Row(
                         children: [
-                          Text('Nana Akua Adjei-Boateng',
+                          Text('N/A',
                             style: TextStyle(
                               fontSize: 24.0,
                               color: Colors.purple[900],
@@ -242,7 +280,7 @@ class ResultScreen extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(height: 6),
-                                Text('27 yrs',
+                                Text('yrs',
                                   style: TextStyle(
                                     fontSize: 24.0,
                                     color: Colors.purple[900],
@@ -260,7 +298,7 @@ class ResultScreen extends StatelessWidget {
                                   ),
                                 ),
                                 SizedBox(height: 6),
-                                Text('F',
+                                Text('N/A',
                                   style: TextStyle(
                                     fontSize: 24.0,
                                     color: Colors.purple[900],
@@ -342,9 +380,11 @@ class ResultScreen extends StatelessWidget {
                   backgroundColor: Colors.purple[900],
                   minimumSize: const Size(400, 50),
                 ),
-                onPressed: _saveResults ,
+                onPressed: (){
+                  _saveResults(context);
+                } ,
                 child: Text(
-                    'Save',
+                  'Save',
                   style: TextStyle(
                     color: Colors.purple[50],
                     fontSize: 20.0,

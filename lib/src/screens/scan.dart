@@ -9,7 +9,9 @@ import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
 import '../models/tflite_model.dart';
+import '../services/scan_service.dart';
 import '../utils/image_processing.dart';
+import 'form.dart';
 
 class ScanScreen extends StatefulWidget {
   @override
@@ -17,6 +19,8 @@ class ScanScreen extends StatefulWidget {
 }
 
 class _ScanScreenState extends State<ScanScreen> {
+  String? _currentPatientId;
+  late Map<String, dynamic> _currentPatientDetails = {};
   late List<CameraDescription> cameras;
   late CameraController controller;
   late Future<void> _initialControllerFuture;
@@ -97,6 +101,7 @@ class _ScanScreenState extends State<ScanScreen> {
   }
 
   Future<void> _savePhoto() async {
+    print('This is the patient ID by diagnosis time: $_currentPatientId');
     File? imageFile = pickedImageFile ?? (imagePath != null ? File(imagePath!) : null);
 
     if (imageFile != null) {
@@ -118,6 +123,7 @@ class _ScanScreenState extends State<ScanScreen> {
           // Run diagnosis model if fundus image is the valid.
           final diagnosis = await runInference(preprocessedImage);
           print('This is the diagnosis: $diagnosis');
+          print('This is the patient ID by diagnosis time: $_currentPatientId');
 
           Navigator.of(context).pop();
 
@@ -125,13 +131,20 @@ class _ScanScreenState extends State<ScanScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ResultScreen(diagnosis: diagnosis),
+              builder: (context) => ResultScreen(
+                patientDetails: _currentPatientDetails,
+                patientId: _currentPatientId,
+                imagePath: imageFile.path,
+                diagnosis: diagnosis,
+                timeStamp: DateTime.now().toIso8601String(),
+              ),
             ),
           );
+          print('Once again this is the patientID: $_currentPatientId');
+          print('And once again this is the patientDetails: $_currentPatientDetails');
         } else {
           Navigator.of(context).pop();
-
-          Navigator.pushReplacement(
+          Navigator.push(
             context,
             PageRouteBuilder(
               pageBuilder: (context, animation1, animation2) => NotFundus(),
@@ -149,7 +162,6 @@ class _ScanScreenState extends State<ScanScreen> {
         }
       } catch (e) {
         Navigator.of(context).pop();
-
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Error processing image: $e')),
         );
@@ -159,6 +171,7 @@ class _ScanScreenState extends State<ScanScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('The passed patientid is: $_currentPatientId');
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -168,6 +181,32 @@ class _ScanScreenState extends State<ScanScreen> {
             fontWeight: FontWeight.w500,
           ),
         ),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.person_add,
+              size: 30,
+              color: Colors.grey[800],
+            ),
+            onPressed: () async {
+              final patientDetails = await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => FormScreen()),
+              );
+              if(patientDetails != null){
+                setState((){
+                  _currentPatientId = patientDetails['patientId'];
+                  _currentPatientDetails = patientDetails['responseData'];
+                  print('This is the patient IDDDDDD: $_currentPatientId');
+                  print ('This patients details are: $_currentPatientDetails');
+              });
+              }
+              else{
+                print('This is the patient  was not received');
+              }
+            },
+          )
+        ],
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(1.0),
           child: Container(

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
@@ -68,15 +69,23 @@ class _FormScreenState extends State<FormScreen> {
       print('Response from backend: ${response.statusCode} ${response.body}');
 
       if(response.statusCode == 201){
+        final responseData = json.decode(response.body);
+        final patientId = responseData['id'].toString();
+        print('This is the response data: $responseData');
+        print('This is the ID from backend: $patientId');
+
         ScaffoldMessenger.of(context as BuildContext).showSnackBar(
             SnackBar(content: Text('Patient added successfully!'),
             ),
         );
+        Navigator.pop(context, {patientId: patientId, responseData: responseData});
+        print('I am leaving with patientid: $patientId');
+        print('I am leaving with patientDetails: $responseData');
 
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => ScanScreen()),
-        );
+        // Navigator.pushReplacement(
+        //     context,
+        //     MaterialPageRoute(builder: (context) => ScanScreen()),
+        // );
       }
       else {
         ScaffoldMessenger.of(context as BuildContext).showSnackBar(
