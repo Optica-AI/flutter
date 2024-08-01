@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:optica_app/src/screens/guidelines.dart';
 import 'package:optica_app/src/screens/history.dart';
 import 'package:optica_app/src/screens/scan.dart';
 import 'package:optica_app/src/screens/tcs.dart';
@@ -31,7 +32,7 @@ class _Home extends State<Home>{
   Widget build(BuildContext context){
     List<Widget> _widgetOptions = <Widget>[
       HomeScreen(),
-      ScanScreen(onBack: _onBackFromScreen),
+      InfoScreen(onBack: _onBackFromScreen),
       History(),
       Terms(),
     ];
