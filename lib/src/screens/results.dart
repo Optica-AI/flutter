@@ -495,7 +495,10 @@ class ResultScreen extends StatelessWidget {
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.purple[900],
-                    minimumSize: const Size(400, 35),
+                    minimumSize: const Size(400, 45),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)
+                    )
                   ),
                   onPressed: (){
                     _saveResults(context);
