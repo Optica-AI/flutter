@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_feather_icons/flutter_feather_icons.dart';
 
 class NavBar extends StatefulWidget {
   final int currentIndex;
@@ -26,8 +28,14 @@ class _Navbar extends State<NavBar> {
         onTap: widget.onTap,
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home),
+            icon: Icon(
+                FeatherIcons.home,
+                size: 22,
+            ),
+            activeIcon: Icon(
+                FeatherIcons.home,
+                size: 23,
+            ),
             label: 'Home',
           ),
           BottomNavigationBarItem(

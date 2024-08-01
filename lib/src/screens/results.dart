@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -111,10 +112,32 @@ class ResultScreen extends StatelessWidget {
         // );
       }
       else{
-        Navigator.of(context).pop();
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Saving results failed: ${response.reasonPhrase}')),
+        showDialog(
+            context: context,
+            builder: (BuildContext context){
+              return AlertDialog(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(11.0)  ,
+                ),
+                content: const Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      CupertinoIcons.xmark_circle_fill,
+                      color: Colors.deepPurple,
+                      size: 60,
+                    ),
+                    SizedBox(height: 16),
+                    Text('No credentials to save with.'),
+                  ],
+                ),
+              );
+            }
         );
+        // Navigator.of(context).pop();
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   SnackBar(content: Text('Saving results failed: ${response.reasonPhrase}')),
+        // );
       }
     }catch(e){
       //Handle errors before I lose my mind

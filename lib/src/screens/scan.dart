@@ -235,7 +235,7 @@ class _ScanScreenState extends State<ScanScreen> {
             icon: Icon(
               Icons.person_add,
               size: 25,
-              color: Colors.grey[800],
+              color: Colors.deepPurple[900],
             ),
             onPressed: () async {
               final patientDetails = await Navigator.push(

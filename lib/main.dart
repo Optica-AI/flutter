@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget{
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
         scaffoldBackgroundColor: Colors.grey[100],
-        primaryColor: Colors.deepPurple,
+        primaryColor: Colors.white,
         fontFamily: GoogleFonts.nunito().fontFamily,
         appBarTheme: AppBarTheme(
           color: Colors.grey[100],

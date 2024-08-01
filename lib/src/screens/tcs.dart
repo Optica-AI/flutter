@@ -49,7 +49,7 @@ class Terms extends StatelessWidget {
                   'About',
                   style: TextStyle(
                     fontWeight: FontWeight.normal,
-                    fontFamily: 'Nunito',
+                    // fontFamily: 'Nunito',
                     fontSize: 16.0,
                     color: Colors.black,
                   ),
@@ -117,7 +117,7 @@ class Terms extends StatelessWidget {
                 'Report a problem',
                 style: TextStyle(
                   fontWeight: FontWeight.normal,
-                  fontFamily: 'Nunito',
+                  // fontFamily: 'Nunito',
                   fontSize: 16.0,
                   color: Colors.black,
                 ),

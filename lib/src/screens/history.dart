@@ -17,7 +17,10 @@ class _HistoryState extends State<History>{
   List<Map<String, dynamic>> _scans = [];
 
   final List<Color> _colorPalette = [
+    Colors.deepPurple[50]!,
     Colors.deepPurple[100]!,
+    Colors.deepPurple[100]!,
+    Colors.deepPurple[200]!,
     Colors.deepPurple[200]!,
     Colors.deepPurple[300]!,
     // Colors.deepPurple[400]!,

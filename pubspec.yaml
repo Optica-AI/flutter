@@ -45,6 +45,8 @@ dependencies:
   tflite_flutter: ^0.10.4
   image_picker: ^1.1.2
   intl: ^0.19.0
+  youtube_player_flutter: ^9.0.1
+  flutter_feather_icons: ^2.0.0+1
 
 dev_dependencies:
   flutter_test:
