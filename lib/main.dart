@@ -12,6 +12,8 @@ import 'package:optica_app/src/screens/form.dart';
 import 'package:optica_app/src/screens/home_screen.dart';
 import 'package:optica_app/src/screens/home.dart';
 import 'package:optica_app/src/screens/scan.dart';
+import 'package:optica_app/src/screens/report_problem.dart';
+import 'package:optica_app/src/widgets/problem_to.dart';
 
 void main(){
   runApp(const MyApp());
@@ -38,7 +40,7 @@ class MyApp extends StatelessWidget{
           selectedItemColor: Colors.deepPurple[600],
         ),
       ),
-      home: SplashScreen(),
+      home: ReportScreen(),
     );
   }
 }
