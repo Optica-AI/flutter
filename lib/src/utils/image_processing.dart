@@ -4,9 +4,11 @@ import 'package:image/image.dart' as img;
 Future<List<List<List<List<double>>>>> preprocessImage(File imageFile) async {
   // Load the image file
   final image = img.decodeImage(await imageFile.readAsBytes())!;
+  print('This is the decoded image: ${image}');
 
   // Resize the image to match the model's input shape (224x224)
   final resizedImage = img.copyResize(image, width: 224, height: 224);
+  print('This is the resized image: $resizedImage');
 
   // Prepare the input array with normalized pixel values
   List<List<List<List<double>>>> input = List.generate(
@@ -23,9 +25,9 @@ Future<List<List<List<List<double>>>>> preprocessImage(File imageFile) async {
   for (int x = 0; x < 224; x++) {
     for (int y = 0; y < 224; y++) {
       final pixel = resizedImage.getPixel(x, y);
-      input[0][x][y][0] = img.getRed(pixel) as double ;  // Red channel (normalized)
-      input[0][x][y][1] = img.getGreen(pixel) as double; // Green channel (normalized)
-      input[0][x][y][2] = img.getBlue(pixel) as double; // Blue channel (normalized)
+      input[0][x][y][0] = img.getRed(pixel).toDouble() ;  // Red channel (normalized)
+      input[0][x][y][1] = img.getGreen(pixel).toDouble(); // Green channel (normalized)
+      input[0][x][y][2] = img.getBlue(pixel).toDouble(); // Blue channel (normalized)
     }
   }
 

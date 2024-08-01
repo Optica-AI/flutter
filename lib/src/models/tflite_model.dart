@@ -32,7 +32,7 @@ Future<String> runInference(List<List<List<List<double>>>> input) async {
   print('Diagnosis model input: $input');
   print('Diagnosis model output: $output');
 
-  return output[0][0] > output[0][1] ? 'POSITIVE':'NEGATIVE';
+  return output[0][0] < output[0][1] ? 'POSITIVE':'NEGATIVE';
 }
 
 
