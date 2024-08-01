@@ -80,15 +80,15 @@ class _FormScreenState extends State<FormScreen> {
         print('This is the ID from backend: $patientId');
 
         ScaffoldMessenger.of(context as BuildContext).showSnackBar(
-            SnackBar(content: Text('Patient added successfully!'),
+            const SnackBar(content: Text('Patient added successfully!'),
             ),
         );
         Navigator.pop(context, {
-          'patientId': patientId,
-          'patientName': patientName,
-          'patientAge': patientAge,
-          'patientGender': patientGender,
-          'patientDOB': patientDOB
+          'patientId': patientId ?? '',
+          'patientName': patientName ?? '',
+          'patientAge': patientAge ?? '',
+          'patientGender': patientGender ?? '',
+          'patientDOB': patientDOB ?? '',
         });
 
         print('I am leaving with patientId: $patientId');
@@ -104,7 +104,7 @@ class _FormScreenState extends State<FormScreen> {
       }
       else {
         ScaffoldMessenger.of(context as BuildContext).showSnackBar(
-          SnackBar(content: Text('Failed to add patient.')),
+          const SnackBar(content: Text('Failed to add patient.')),
         );
       }
     }
@@ -149,7 +149,7 @@ class _FormScreenState extends State<FormScreen> {
           ),
         ),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1.0),
+          preferredSize: const Size.fromHeight(1.0),
           child: Container(
             color: Colors.grey[300],
             height: 1.0,
@@ -157,7 +157,7 @@ class _FormScreenState extends State<FormScreen> {
         ),
       ),
       body: Padding(
-        padding:EdgeInsets.only(left: 20.0, right: 20.0, top: 30.0, bottom: 20.0),
+        padding:const EdgeInsets.only(left: 20.0, right: 20.0, top: 30.0, bottom: 20.0),
         child: SingleChildScrollView(
           child: Form(
             key: _formKey,
@@ -165,7 +165,7 @@ class _FormScreenState extends State<FormScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                       left: 0.0, top: 0.0, right: 0.0, bottom: 10.0),
                   child: Text(
                     "First Name",
@@ -174,12 +174,12 @@ class _FormScreenState extends State<FormScreen> {
                       color: Colors.purple[900],
                       fontSize: 13.0,
                       fontWeight: FontWeight.w300,
-                      fontFamily: 'Nunito Sans',
+                      // fontFamily: 'Nunito Sans',
                     ),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                       left: 0.0, top: 0.0, right: 0.0, bottom: 10.0),
                   child: Container(
                     height: 39.0,
@@ -187,7 +187,7 @@ class _FormScreenState extends State<FormScreen> {
                       border: Border.all(
                         color: Colors.white,
                       ),
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                      borderRadius: const BorderRadius.all(Radius.circular(12)),
                     ),
                     child: TextFormField(
                       controller: _firstnameController,
@@ -209,7 +209,7 @@ class _FormScreenState extends State<FormScreen> {
                     ),
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(left: 0.0, top: 0.0, right: 0.0, bottom: 10.0),
+                Padding(padding: const EdgeInsets.only(left: 0.0, top: 0.0, right: 0.0, bottom: 10.0),
                   child: Text(
                     "Last Name",
                     textAlign: TextAlign.left,
@@ -217,12 +217,12 @@ class _FormScreenState extends State<FormScreen> {
                       color: Colors.purple[900],
                       fontSize: 13.0,
                       fontWeight: FontWeight.w300,
-                      fontFamily: 'Nunito Sans',
+                      // fontFamily: 'Nunito Sans',
                     ),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                       left: 0.0, top: 0.0, right: 0.0, bottom: 10.0),
                   child: Container(
                     height: 39.0,
@@ -230,7 +230,7 @@ class _FormScreenState extends State<FormScreen> {
                       border: Border.all(
                         color: Colors.white,
                       ),
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                      borderRadius: const BorderRadius.all(Radius.circular(12)),
                     ),
                     child: TextFormField(
                       controller: _lastnameController,
@@ -253,7 +253,7 @@ class _FormScreenState extends State<FormScreen> {
                     ),
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(left: 0.0, top: 0.0, right: 0.0, bottom: 10.0),
+                Padding(padding: const EdgeInsets.only(left: 0.0, top: 0.0, right: 0.0, bottom: 10.0),
                   child: Text(
                     "Date of Birth",
                     textAlign: TextAlign.left,
@@ -261,12 +261,12 @@ class _FormScreenState extends State<FormScreen> {
                       color: Colors.purple[900],
                       fontSize: 13.0,
                       fontWeight: FontWeight.w300,
-                      fontFamily: 'Nunito Sans',
+                      // fontFamily: 'Nunito Sans',
                     ),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                       left: 0.0, top: 0.0, right: 0.0, bottom: 10.0),
                   child: Container(
                     height: 39.0,
@@ -274,7 +274,7 @@ class _FormScreenState extends State<FormScreen> {
                       border: Border.all(
                         color: Colors.white,
                       ),
-                      borderRadius: BorderRadius.all(Radius.circular(12)),
+                      borderRadius: const BorderRadius.all(Radius.circular(12)),
                     ),
                     child: TextFormField(
                       controller: _dobController,
@@ -299,7 +299,7 @@ class _FormScreenState extends State<FormScreen> {
                     ),
                   ),
                 ),
-                Padding(padding: EdgeInsets.only(left: 0.0, top: 15.0, right: 0.0, bottom: 10.0),
+                Padding(padding: const EdgeInsets.only(left: 0.0, top: 15.0, right: 0.0, bottom: 10.0),
                   child: Text(
                     "Gender",
                     textAlign: TextAlign.left,
@@ -307,7 +307,7 @@ class _FormScreenState extends State<FormScreen> {
                       color: Colors.purple[900],
                       fontSize: 13.0,
                       fontWeight: FontWeight.w300,
-                      fontFamily: 'Nunito Sans',
+                      // fontFamily: 'Nunito Sans',
                     ),
                   ),
                 ),
@@ -353,12 +353,12 @@ class _FormScreenState extends State<FormScreen> {
                             _hasPreExistingConditions = value ?? false;
                           });
                         }),
-                    Text('Any pre-existing conditions'),
+                    const Text('Any pre-existing conditions'),
                   ],
                 ),
                 if(_hasPreExistingConditions) ...[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(vertical: 10.0),
                     child: Text(
                       'Select pre-existing conditions:',
                       style: TextStyle(
@@ -383,7 +383,7 @@ class _FormScreenState extends State<FormScreen> {
                                   }
                                   else {
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
+                                      const SnackBar(
                                         content: Text('You can only select 7 conditions'),
                                       ),
                                     );
@@ -400,7 +400,7 @@ class _FormScreenState extends State<FormScreen> {
                   ),
                 ],
                 Padding(
-                  padding: EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.all(10.0),
                   child: SizedBox(
                     width: 400.0,
                     child: ElevatedButton(
@@ -409,7 +409,7 @@ class _FormScreenState extends State<FormScreen> {
                         foregroundColor: Colors.white,
                       ),
                       onPressed: _submitForm,
-                      child: Text(
+                      child: const Text(
                         'SUBMIT',
                         style: TextStyle(
                           fontSize: 16.0,

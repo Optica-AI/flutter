@@ -5,7 +5,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:optica_app/src/screens/results.dart';
-import 'package:optica_app/src/widgets/notfundus_error.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 
@@ -116,11 +115,11 @@ class _ScanScreenState extends State<ScanScreen> {
       showDialog(
           context: context,
           builder: (BuildContext context) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           });
 
       try {
-        await Future.delayed(Duration(milliseconds: 3000));
+        await Future.delayed(const Duration(milliseconds: 3000));
 
         // Process image
         final preprocessedImage = await preprocessImage(imageFile);
@@ -138,19 +137,33 @@ class _ScanScreenState extends State<ScanScreen> {
           // Navigation to diagnosis screen
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => ResultScreen(
-                patientId: _currentPatientId,
-                patientName: _currentPatientName,
-                patientAge: _currentPatientAge,
-                patientGender: _currentPatientGender,
-                patientDOB: _currentPatientDOB,
+            PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) => ResultScreen(
+                patientId: _currentPatientId ?? null,
+                patientName: _currentPatientName ?? 'N/A',
+                patientAge: _currentPatientAge ?? 'N/A',
+                patientGender: _currentPatientGender ?? 'N/A',
+                patientDOB: _currentPatientDOB ?? 'N/A',
                 imagePath: imageFile.path,
                 diagnosis: diagnosis,
                 timeStamp: DateTime.now().toIso8601String(),
               ),
+              transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                const begin = Offset(1.0, 0.0);
+                const end = Offset.zero;
+                const curve = Curves.ease;
+
+                var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                return SlideTransition(
+                  position: animation.drive(tween),
+                  child: child,
+                );
+              },
+              transitionDuration: const Duration(milliseconds: 1000),
             ),
           );
+
           print('Once again this is the patientID: $_currentPatientId');
           print('And once again this is the patientDetails: $_currentPatientName');
         } else {
@@ -162,7 +175,7 @@ class _ScanScreenState extends State<ScanScreen> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(11.0),
                   ),
-                  content: Column(
+                  content: const Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Icon(
@@ -207,7 +220,7 @@ class _ScanScreenState extends State<ScanScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new),
+          icon: const Icon(Icons.arrow_back_ios_new),
           onPressed: widget.onBack,
         ),
         title: Text(
@@ -265,7 +278,7 @@ class _ScanScreenState extends State<ScanScreen> {
           future: _initialControllerFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             } else if (snapshot.connectionState == ConnectionState.done) {

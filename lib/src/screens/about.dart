@@ -17,7 +17,7 @@ class AboutScreen extends StatelessWidget {
             //   child: Back_Button(),
             // ),
             Padding(
-              padding: EdgeInsets.only(left: 10.0, top: 0.0, right: 10.0, bottom: 5.0),
+              padding: const EdgeInsets.only(left: 10.0, top: 0.0, right: 10.0, bottom: 5.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -29,7 +29,7 @@ class AboutScreen extends StatelessWidget {
                 ],
               ),
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.only(left: 25.0, top: 5.0, right: 25.0, bottom: 0.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -54,7 +54,7 @@ class AboutScreen extends StatelessWidget {
             ),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.only(left:30.0),
+                padding: const EdgeInsets.only(left:30.0),
                 child: ListView(
                   children: const <Widget>[
                     ListTile(

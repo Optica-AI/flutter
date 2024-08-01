@@ -1,3 +1,33 @@
+// import 'dart:io';
+// import 'package:image/image.dart' as img;
+//
+// Future<List<List<List<List<int>>>>> preprocessImage(File imageFile) async {
+//   // Load the image file
+//   final image = img.decodeImage(await imageFile.readAsBytes())!;
+//
+//   // Resize the image to match the model's input shape (224x224)
+//   final resizedImage = img.copyResize(image, width: 224, height: 224);
+//
+//   // Prepare the input array without normalization
+//   List<List<List<List<int>>>> input = List.generate(1, (_) => List.generate(224, (_) => List.generate(224, (_) => List.generate(3, (_) => 0))));
+//
+//   for (int x = 0; x < 224; x++) {
+//     for (int y = 0; y < 224; y++) {
+//       final pixel = resizedImage.getPixel(x, y);
+//       input[0][x][y][0] = img.getRed(pixel);  // Red channel
+//       input[0][x][y][1] = img.getGreen(pixel); // Green channel
+//       input[0][x][y][2] = img.getBlue(pixel); // Blue channel
+//     }
+//   }
+//
+//   return input;
+// }
+
+
+
+
+
+
 import 'dart:io';
 import 'package:image/image.dart' as img;
 

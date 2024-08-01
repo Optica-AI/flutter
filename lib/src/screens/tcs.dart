@@ -61,7 +61,7 @@ class Terms extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(left: 16.0),
             child: Divider(
               thickness: 0.6,
@@ -69,7 +69,7 @@ class Terms extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(12.0),
             child: ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -95,7 +95,7 @@ class Terms extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
+          const Padding(
             padding: EdgeInsets.only(left: 16.0),
             child: Divider(
               thickness: 0.6,

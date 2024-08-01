@@ -40,8 +40,12 @@ class _HistoryState extends State<History>{
     try{
       final response = await http.get(Uri.parse(url));
       if (response.statusCode == 200){
+
+        final List<dynamic> fetchedScans = json.decode(response.body);
+        print('Fetched scan: $fetchedScans');
+
         setState(() {
-          _scans = List<Map<String, dynamic>>.from(json.decode(response.body));
+          _scans = List<Map<String, dynamic>>.from(json.decode(response.body)).reversed.toList();
         });
       }
       else{
@@ -64,7 +68,7 @@ class _HistoryState extends State<History>{
           ),
         ),
         bottom: PreferredSize(
-          preferredSize: Size.fromHeight(1.0),
+          preferredSize: const Size.fromHeight(1.0),
           child: Container(
             color: Colors.grey[300],
             height: 1.0,
@@ -72,16 +76,19 @@ class _HistoryState extends State<History>{
         ),
       ),
       body: _scans.isEmpty
-          ? Center(child: Text('No scans taken'))
+          ? const Center(child: Text('No scans taken'))
           : ListView.builder(
               itemCount: _scans.length,
               itemBuilder: (BuildContext context, int index) {
                 final scan = _scans[index];
                 final color = _colorPalette[index % _colorPalette.length];
-                final createdAt = DateTime.parse(scan['createdAt']);
+                final createdAt = scan['createdAt'] != null
+                    ? DateTime.tryParse(scan['createdAt']) ?? DateTime.now()
+                    : DateTime.now();
+
                 final formattedTime =  DateFormat.Hm().format(createdAt);
                 return Padding(
-                    padding: EdgeInsets.only(left: 10.0, top: 5.0, right: 10.0, bottom: 5.0),
+                    padding: const EdgeInsets.only(left: 10.0, top: 5.0, right: 10.0, bottom: 5.0),
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(11),
@@ -89,8 +96,13 @@ class _HistoryState extends State<History>{
                       ),
                       // color: color,
                       child: ListTile(
-                        title: Text('Scan ID: ${scan['patientId']}${scan['patientName']}'),
-                        subtitle: Text('Diagnosis: ${scan['diagnosis']}'),
+                        title: Text(
+                            'Scan ID: ${scan['patientId']}${scan['patientName'] ?? 'N/A'}',
+                            style: TextStyle(
+                              fontSize: 14.0,
+                            ),
+                        ),
+                        subtitle: Text('Diagnosis: ${scan['diagnosis'] ?? 'N/A'}'),
                         trailing: Text('${formattedTime}'),
                       ),
                     ),

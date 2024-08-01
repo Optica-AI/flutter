@@ -5,7 +5,7 @@ class LegalAgreement extends StatelessWidget{
   Widget build(BuildContext context){
     return Scaffold(
       appBar: AppBar(
-        title: Column(
+        title: const Column(
           children: [
             Text(''),
             Text(
@@ -18,7 +18,7 @@ class LegalAgreement extends StatelessWidget{
           ],
         )
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

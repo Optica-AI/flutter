@@ -53,7 +53,7 @@ class ResultScreen extends StatelessWidget {
 
     final scan = {
       'patientId': patientId,
-      'patientName': patientName,
+      'patientName': patientName ?? '',
       'imagePath': imagePath,
       'diagnosis': diagnosis,
       'timeStamp': DateTime.now().toIso8601String(),
@@ -70,9 +70,11 @@ class ResultScreen extends StatelessWidget {
         },
         body: json.encode(scan),
       );
-      print(response);
+      print('Response code: ${response.statusCode}');
+      print('Response body: ${response.body}');
 
-      await Future.delayed(Duration(seconds: 1));
+
+      await Future.delayed(const Duration(seconds: 1));
       if(response.statusCode == 201) {
         Navigator.of(context).pop();
         showDialog(
@@ -82,7 +84,7 @@ class ResultScreen extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(11.0)  ,
                 ),
-                content: Column(
+                content: const Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Icon(
@@ -97,7 +99,7 @@ class ResultScreen extends StatelessWidget {
               );
             }
         );
-        await Future.delayed(Duration(seconds:1));
+        await Future.delayed(const Duration(seconds:1));
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -130,7 +132,7 @@ class ResultScreen extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(11.0),
             ),
-            content: Column(
+            content: const Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 CircularProgressIndicator(),
@@ -145,7 +147,32 @@ class ResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String formattedDOB =  DateFormat('dd MMMM yyyy').format(DateTime.parse(patientDOB!));
+    print('ResultScreen Data:');
+    print('Patient ID: $patientId');
+    print('Patient Name: $patientName');
+    print('Patient Age: $patientAge');
+    print('Patient Gender: $patientGender');
+    print('Patient DOB: $patientDOB');
+    print('Image Path: $imagePath');
+    print('Diagnosis: $diagnosis');
+    print('TimeStamp: $timeStamp');
+
+    String formattedDOB = '';
+    try{
+      formattedDOB = patientDOB != null
+          ? DateFormat('dd MMMM yyyy').format(DateTime.parse(patientDOB!))
+          : 'N/A';
+    }catch(e){
+      formattedDOB = 'N/A';
+      print('Error formatting date: $e');
+    }
+
+    try{
+      DateTime.parse(patientDOB ?? '');
+    } catch(e){
+      print('Error parsing date: $e');
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -166,7 +193,7 @@ class ResultScreen extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.only(left: 25.0, top: 15.0, right: 25.0, bottom: 25.0),
+          padding: const EdgeInsets.only(left: 25.0, top: 15.0, right: 25.0, bottom: 25.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -177,7 +204,7 @@ class ResultScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(11),
                     color: Colors.deepPurple[100],
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Colors.grey,
                         offset: Offset(3, 3),
@@ -187,7 +214,7 @@ class ResultScreen extends StatelessWidget {
                     ],
                   ),
                   child: Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -201,16 +228,16 @@ class ResultScreen extends StatelessWidget {
                                 color: Colors.purple[900],
                               ),
                             ),
-                            SizedBox(height: 6),
+                            const SizedBox(height: 6),
                             Text(
-                              '#000${patientId}',
+                              '#000${patientId ?? 'N/A'}',
                               style: TextStyle(
                                 fontWeight: FontWeight.w100,
                                 fontSize: 14.0,
                                 color: Colors.purple[900],
                               ),
                             ),
-                            SizedBox(height: 16),
+                            const SizedBox(height: 16),
                             Text(
                               'Date',
                               style: TextStyle(
@@ -218,7 +245,7 @@ class ResultScreen extends StatelessWidget {
                                 color: Colors.purple[900],
                               ),
                             ),
-                            SizedBox(height: 6),
+                            const SizedBox(height: 6),
                             Text(
                               timeStamp.split('T')[0],
                               style: TextStyle(
@@ -239,7 +266,7 @@ class ResultScreen extends StatelessWidget {
                                 color: Colors.purple[900],
                               ),
                             ),
-                            SizedBox(height: 6),
+                            const SizedBox(height: 6),
                             Text(
                               '#OT0006', /// Check response for vibes
                               style: TextStyle(
@@ -248,7 +275,7 @@ class ResultScreen extends StatelessWidget {
                                 color: Colors.purple[900],
                               ),
                             ),
-                            SizedBox(height: 16),
+                            const SizedBox(height: 16),
                             Text(
                               'Time',
                               style: TextStyle(
@@ -256,7 +283,7 @@ class ResultScreen extends StatelessWidget {
                                 color: Colors.purple[900],
                               ),
                             ),
-                            SizedBox(height: 6),
+                            const SizedBox(height: 6),
                             Text(
                               'GMT ${timeStamp.split('T')[1].split('.')[0]}',
                               style: TextStyle(
@@ -273,7 +300,7 @@ class ResultScreen extends StatelessWidget {
                 ),
               ),
               //________________________________________________________________
-              Padding(
+              const Padding(
                 padding: EdgeInsets.only(left: 10.0),
                 child: Divider(
                   thickness: 0.6,
@@ -282,13 +309,13 @@ class ResultScreen extends StatelessWidget {
               ),
               //________________________________________________________________
               Padding(
-                padding: EdgeInsets.only(top: 6.0),
+                padding: const EdgeInsets.only(top: 6.0),
                 child: Container(
                   height: 380.0,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(11),
                     color: Colors.white,
-                    boxShadow: [
+                    boxShadow: const [
                       BoxShadow(
                         color: Colors.grey,
                         offset: Offset(4, 4),
@@ -314,7 +341,7 @@ class ResultScreen extends StatelessWidget {
                         ),
                         Row(
                           children: [
-                            Text('${patientName}',
+                            Text('${patientName ?? 'N/A'}',
                               style: TextStyle(
                                 fontSize: 18.0,
                                 color: Colors.purple[900],
@@ -323,7 +350,7 @@ class ResultScreen extends StatelessWidget {
                           ],
                         ),
                         //_____________________________________________________
-                        Padding(
+                        const Padding(
                           padding: EdgeInsets.only(left: 10.0),
                           child: Divider(
                             thickness: 0.6,
@@ -332,7 +359,7 @@ class ResultScreen extends StatelessWidget {
                         ),
                         //_____________________________________________________
                         Padding(
-                          padding: EdgeInsets.only(right:40.0),
+                          padding: const EdgeInsets.only(right:40.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -345,8 +372,8 @@ class ResultScreen extends StatelessWidget {
                                       color: Colors.purple[900],
                                     ),
                                   ),
-                                  SizedBox(height: 6),
-                                  Text('${patientAge} yrs',
+                                  const SizedBox(height: 6),
+                                  Text('${patientAge ?? 'N/A'} yrs',
                                     style: TextStyle(
                                       fontSize: 18.0,
                                       color: Colors.purple[900],
@@ -363,9 +390,9 @@ class ResultScreen extends StatelessWidget {
                                       color: Colors.purple[900],
                                     ),
                                   ),
-                                  SizedBox(height: 6),
+                                  const SizedBox(height: 6),
                                   Text(
-                                    '${patientGender == 'male' ? 'M' : (patientGender == 'female' ? 'F' : '')}',
+                                    '${patientGender == 'male' ? 'M' : (patientGender == 'female' ? 'F' : 'N/A')}',
                                     style: TextStyle(
                                       fontSize: 24.0,
                                       color: Colors.purple[900],
@@ -377,7 +404,7 @@ class ResultScreen extends StatelessWidget {
                           ),
                         ),
                         //____________________________________________________
-                        Padding(
+                        const Padding(
                           padding: EdgeInsets.only(left: 10.0),
                           child: Divider(
                             thickness: 0.6,
@@ -406,7 +433,7 @@ class ResultScreen extends StatelessWidget {
                           ],
                         ),
                         //____________________________________________________
-                        Padding(
+                        const Padding(
                           padding: EdgeInsets.only(left: 10.0),
                           child: Divider(
                             thickness: 0.6,
@@ -441,7 +468,7 @@ class ResultScreen extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.only(top: 20.0),
+                padding: const EdgeInsets.only(top: 20.0),
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.purple[900],

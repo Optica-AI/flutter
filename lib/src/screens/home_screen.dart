@@ -29,7 +29,7 @@ class HomeScreen extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(bottom: 18.0),
                 child: Text(
-                  "Good Afternoon,",
+                  "Good Day,",
                   style: TextStyle(
                     color: Colors.purple[900],
                     fontSize: 26.0,
