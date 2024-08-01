@@ -5,13 +5,7 @@ import 'package:optica_app/src/screens/legal_agreement.dart';
 import 'package:optica_app/src/widgets/navbar.dart';
 
 class Terms extends StatelessWidget {
-//   @override
-//   _TermsState createState() => _TermsState();
-// }
-// class _TermsState extends State<Terms>{
-//     int selectedIndex = 0;
-//
-//   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
