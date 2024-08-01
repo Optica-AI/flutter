@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:optica_app/src/screens/about.dart';
 import 'package:optica_app/src/screens/legal_agreement.dart';
+import 'package:optica_app/src/screens/report_problem.dart';
 import 'package:optica_app/src/widgets/navbar.dart';
 
 class Terms extends StatelessWidget {
@@ -103,7 +104,7 @@ class Terms extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AboutScreen(),
+                    builder: (context) => ReportScreen(),
                   ),
                 );
               },

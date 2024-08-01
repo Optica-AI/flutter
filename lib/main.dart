@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget{
           selectedItemColor: Colors.deepPurple[600],
         ),
       ),
-      home: ReportScreen(),
+      home: SplashScreen(),
     );
   }
 }
